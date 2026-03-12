@@ -28,7 +28,26 @@ spec:
   - name: image-expires-after
     value: 5d
   - name: dockerfile
-    value: Dockerfile
+    value: Containerfile
+  - name: hermetic
+    value: 'true'
+  - name: prefetch-input
+    value: |
+      [
+        {"type": "gomod", "path": "deps/go-submodules/kubernetes"},
+        {"type": "gomod", "path": "deps/go-submodules/oc"},
+        {"type": "gomod", "path": "deps/go-tools/buildah"},
+        {"type": "gomod", "path": "deps/go-tools/conftest"},
+        {"type": "gomod", "path": "deps/go-tools/cosign"},
+        {"type": "gomod", "path": "deps/go-tools/oras"},
+        {"type": "gomod", "path": "deps/go-tools/syft"},
+        {"type": "gomod", "path": "deps/go-tools/tkn"},
+        {"type": "gomod", "path": "deps/go-tools/yq"},
+        {"type": "pip", "path": "deps/pip", "requirements_files": ["requirements.txt"], "requirements_build_files": ["requirements-build.txt"]},
+        {"type": "rpm", "path": "deps/rpm"},
+        {"type": "rpm", "path": "deps/rpm/python-builddeps"},
+        {"type": "rpm", "path": "deps/rpm/go-builddeps"}
+      ]
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while maintaining trust after pipeline customization.
@@ -170,7 +189,7 @@ spec:
         - name: name
           value: prefetch-dependencies-oci-ta
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-prefetch-dependencies-oci-ta:0.2@sha256:22612d629796a29ddd177d6e29c18a4319875d4e2348286ea01d16427cec0dc1
+          value: quay.io/bpimente/test-images@sha256:5af9dc5ff4a77fb2a6c5ae6b72ceb77f5c4b8d7206711fa7153a9d8f95b250ef
         - name: kind
           value: task
         resolver: bundles
